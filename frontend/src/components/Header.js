@@ -13,18 +13,60 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import SearchIcon from "@material-ui/icons/Search";
 import "./css/QHeader.css";
+import axios from "axios";
 
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const Close = <CloseIcon />;
-  const [inputUrl, setInputUrl] = useState('');
+  const [inputUrl, setInputUrl] = useState("");
+  const [question, setQuestion] = useState("");
+
+  const handleSubmit = async () => {
+    if (question !== "") {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const body = {
+        questionName: question,
+        questionUrl: inputUrl,
+        // user: user,
+      };
+      await axios
+        .post("/api/questions", body, config)
+        .then((res) => {
+          console.log(res.data);
+          alert(res.data.message);
+          window.location.href = "/";
+        })
+        .catch((e) => {
+          console.log(e);
+          alert("Error in adding question");
+        });
+    }
+  };
+  
+
+  // const handleLogout = () => {
+  //   if (window.confirm("Are you sure to logout ?")) {
+  //     signOut(auth)
+  //       .then(() => {
+  //         dispatch(logout());
+  //         console.log("Logged out");
+  //       })
+  //       .catch(() => {
+  //         console.log("error in logout");
+  //       });
+  //   }
+  // };
 
   return (
     <div className="qHeader">
       <div className="qHeader__content">
         <div className="qHeader__logo">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Quora_logo_2015.svg/250px-Quora_logo_2015.svg.png"
+            src="https://video-public.canva.com/VAD8lt3jPyI/v/ec7205f25c.gif"
             alt="logo"
           />
         </div>
@@ -55,8 +97,8 @@ function Header() {
 
         <div className="qHeader__Rem">
           <Avatar />
-        
-         <Button onClick={() => setIsModalOpen(true)}>Add Question</Button>
+
+          <Button onClick={() => setIsModalOpen(true)}>Add Question</Button>
           <Modal
             open={isModalOpen}
             closeIcon={Close}
@@ -75,7 +117,7 @@ function Header() {
               <h5>Share Link</h5>
             </div>
             <div className="modal__info">
-              <Avatar  className="avatar" />
+              <Avatar src={""} className="avatar" />
               <div className="modal__scope">
                 <PeopleAltOutlined />
                 <p>Public</p>
@@ -84,8 +126,8 @@ function Header() {
             </div>
             <div className="modal__Field">
               <Input
-                value={inputUrl}
-                onChange={(e) => setInputUrl(e.target.value)}
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
                 type=" text"
                 placeholder="Start your question with 'What', 'How', 'Why', etc. "
               />
@@ -123,12 +165,12 @@ function Header() {
               <button className="cancel" onClick={() => setIsModalOpen(false)}>
                 Cancel
               </button>
-              <button  type="submit" className="add">
+              <button onClick={handleSubmit} type="submit" className="add">
                 Add Question
               </button>
             </div>
           </Modal>
-          </div>
+        </div>
       </div>
     </div>
   );

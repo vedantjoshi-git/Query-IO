@@ -3,7 +3,7 @@
     cursor: pointer;
 }
 
-.widget__contents {
+.widget__content {
     margin: 5px;
     display: flex;
     padding: 5px;
