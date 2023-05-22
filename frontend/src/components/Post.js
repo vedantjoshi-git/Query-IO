@@ -49,7 +49,7 @@ function Post({ post }) {
       const body = {
         answer: answer,
         questionId: post?._id,
-        user: user
+        user: user,
       };
       await axios
         .post("/api/answers", body, config)
@@ -129,18 +129,6 @@ function Post({ post }) {
         {post.questionUrl !== "" && <img src={post.questionUrl} alt="url" />}
       </div>
 
-      <div className="post__footer">
-        <div className="post__footerAction">
-          <ArrowUpwardOutlined />
-          <ArrowDownwardOutlined />
-        </div>
-        <RepeatOutlined />
-        <ChatBubbleOutline />
-        <div className="post__footerLeft">
-          <ShareOutlined />
-          <MoreHorizOutlined />
-        </div>
-      </div>
       <p
         style={{
           color: "rgba(0,0,0,0.5)",
@@ -196,6 +184,15 @@ function Post({ post }) {
                 </div>
               </div>
               <div className="post-answer">{ReactHtmlParser(_a?.answer)}</div>
+              <div className="post__footer">
+                <div className="post__footerAction">
+                  <ArrowUpwardOutlined />
+                  <ArrowDownwardOutlined />
+                </div>
+                <div className="post__footerLeft">
+                  <MoreHorizOutlined />
+                </div>
+              </div>
             </div>
           </>
         ))}
