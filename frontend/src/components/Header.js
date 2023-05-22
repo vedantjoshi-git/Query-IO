@@ -14,12 +14,18 @@ import CloseIcon from "@material-ui/icons/Close";
 import SearchIcon from "@material-ui/icons/Search";
 import "./css/QHeader.css";
 import axios from "axios";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import { logout, selectUser } from "../feature/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const Close = <CloseIcon />;
   const [inputUrl, setInputUrl] = useState("");
   const [question, setQuestion] = useState("");
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const handleSubmit = async () => {
     if (question !== "") {
@@ -31,7 +37,7 @@ function Header() {
       const body = {
         questionName: question,
         questionUrl: inputUrl,
-        // user: user,
+        user: user,
       };
       await axios
         .post("/api/questions", body, config)
@@ -48,18 +54,18 @@ function Header() {
   };
   
 
-  // const handleLogout = () => {
-  //   if (window.confirm("Are you sure to logout ?")) {
-  //     signOut(auth)
-  //       .then(() => {
-  //         dispatch(logout());
-  //         console.log("Logged out");
-  //       })
-  //       .catch(() => {
-  //         console.log("error in logout");
-  //       });
-  //   }
-  // };
+  const handleLogout = () => {
+    if (window.confirm("Are you sure to logout ?")) {
+      signOut(auth)
+        .then(() => {
+          dispatch(logout());
+          console.log("Logged out");
+        })
+        .catch(() => {
+          console.log("error in logout");
+        });
+    }
+  };
 
   return (
     <div className="qHeader">
@@ -96,7 +102,7 @@ function Header() {
         </div>
 
         <div className="qHeader__Rem">
-          <Avatar />
+          <span><Avatar src={user?.photo} onClick = {handleLogout} /></span>
 
           <Button onClick={() => setIsModalOpen(true)}>Add Question</Button>
           <Modal
@@ -117,7 +123,7 @@ function Header() {
               <h5>Share Link</h5>
             </div>
             <div className="modal__info">
-              <Avatar src={""} className="avatar" />
+              <Avatar src={user?.photo} className="avatar" />
               <div className="modal__scope">
                 <PeopleAltOutlined />
                 <p>Public</p>

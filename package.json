@@ -21,11 +21,14 @@
   },
   "homepage": "https://github.com/vedantjoshi-git/Query-IO#readme",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "firebase": "^9.21.0",
     "mongoose": "^7.1.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "react-redux": "^8.0.5"
   }
 }
